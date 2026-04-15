@@ -14,6 +14,29 @@ This project develops lightweight, reproducible workflows for ion trap design, f
 
 The goal is to connect physical modeling with practical design intuition for trapped-ion quantum systems.
 
+## Quick Start
+
+### Option 1: Run in Colab
+Click the button below to open the first notebook:
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](REPLACE_WITH_NOTEBOOK_LINK)
+
+### Option 2: Local setup
+
+```bash
+git clone https://github.com/thinkthoughts/ion-trap-parameter-lab.git
+cd ion-trap-parameter-lab
+
+# using pip
+pip install -r requirements.txt
+
+# OR using conda
+conda env create -f environment.yml
+conda activate ion-trap-parameter-lab
+
+jupyter lab
+```
+
 ## Framework
 
 This project is guided by a general constraint-based workflow:
