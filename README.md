@@ -177,7 +177,8 @@ It provides a minimal but complete **design → physics → evaluation pipeline*
 ## Author
 
 Dan Hawkley
-Independent Computational Science / Quantum Systems
+Boulder, CO
+danhawkley@gmail.com
 
 ---
 
