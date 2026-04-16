@@ -22,6 +22,18 @@ The system produces physically meaningful outputs:
 
 ---
 
+## How this maps to real ion-trap R&D
+
+This repository mirrors the core trapped-ion design workflow:
+
+geometry → electrostatics → fields → pseudopotential → trap → optimization → physical metrics
+
+For a detailed explanation of how each step corresponds to real experimental and computational methods:
+
+👉 [docs/ion_trap_context.md](docs/ion_trap_context.md)
+
+---
+
 ## Key Idea
 
 We optimize trap designs using a physically motivated objective:
