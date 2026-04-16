@@ -1,66 +1,186 @@
 # Ion Trap Parameter Lab
 
-Numerical tools for modeling and optimizing surface-electrode ion traps.
+**Electrostatic Design and Optimization Workflow for Surface-Electrode Ion Traps**
+
+![Hero Figure](hero_figure_v2.png)
+
+---
 
 ## Overview
 
-This project develops lightweight, reproducible workflows for ion trap design, focusing on:
+This project implements a **numerical workflow for surface-electrode ion trap design**, combining electrostatic modeling, optimization, and physical interpretation.
 
-- Electrostatic potential and field calculations (Laplace / Poisson)
-- RF pseudopotential analysis
-- Multi-parameter sweeps (geometry, voltages)
-- Stability and confinement region identification
-- Basic optimization of trap configurations
+It demonstrates an end-to-end pipeline:
 
-The goal is to connect physical modeling with practical design intuition for trapped-ion quantum systems.
+> **geometry → Laplace solve → E-field → pseudopotential → trap detection → optimization → physical metrics**
 
-## Quick Start
+The system produces physically meaningful outputs:
 
-### Option 1: Run in Colab
-Click the button below to open the first notebook:
+* Trap height (**µm**)
+* Pseudopotential scale (**eV**)
+* Secular frequencies (**MHz**)
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](REPLACE_WITH_NOTEBOOK_LINK)
+---
 
-### Option 2: Local setup
+## Key Idea
 
-```bash
-git clone https://github.com/thinkthoughts/ion-trap-parameter-lab.git
-cd ion-trap-parameter-lab
+We optimize trap designs using a physically motivated objective:
 
-# using pip
-pip install -r requirements.txt
-
-# OR using conda
-conda env create -f environment.yml
-conda activate ion-trap-parameter-lab
-
-jupyter lab
+```
+score = trap_strength / trap_height²
 ```
 
-## Framework
+Where:
 
-This project is guided by a general constraint-based workflow:
+* **trap_strength** = sum of positive curvature eigenvalues (Hessian)
+* **trap_height** = distance above electrode plane
 
-- Define a parameter domain  
-- Apply finite physical and design constraints  
-- Identify regions that remain stable and bounded under numerical verification  
+This balances:
 
-This approach is informed by: https://sdg5.app/main.pdf
+* strong confinement (↑ curvature)
+* practical trapping height (↓ height)
 
-In that work, bounded structure emerges from finite constraints rather than unbounded filtering.  
-Here, the same idea is applied to ion-trap parameter spaces to identify stable confinement regions.
+---
 
-## Structure (initial)
+## Quickstart (Colab)
 
-- `notebooks/` — simulation and visualization workflows  
-- `src/` — reusable numerical components (solvers, utilities)  
-- `figures/` — generated plots and diagrams  
+Run the full pipeline directly:
 
-## Status
+👉 [Open Notebook 09 (Full Pipeline)](https://colab.research.google.com/github/thinkthoughts/ion-trap-parameter-lab/blob/main/notebooks/09_integrated_optimization_to_physical_design_summary_v2.ipynb)
 
-Early-stage. Initial notebooks will implement electrostatic solvers and simple trap geometries.
+---
 
-## Related Work
+### Step-by-step notebooks
 
-- Rydberg simulations → https://github.com/thinkthoughts/rydberg-parameter-lab  
-- Ion benchmarking → https://github.com/thinkthoughts/ion-benchmark-lab  
+| Notebook | Description                             | Colab                                                                                                                                                                    |
+| -------- | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 01       | Laplace solver (2D surface electrodes)  | [Open](https://colab.research.google.com/github/thinkthoughts/ion-trap-parameter-lab/blob/main/notebooks/01_laplace_solver_2d_surface_trap.ipynb)                        |
+| 02       | Electric field + streamlines            | [Open](https://colab.research.google.com/github/thinkthoughts/ion-trap-parameter-lab/blob/main/notebooks/02_electric_field_and_streamlines.ipynb)                        |
+| 03       | RF pseudopotential + trap height        | [Open](https://colab.research.google.com/github/thinkthoughts/ion-trap-parameter-lab/blob/main/notebooks/03_rf_pseudopotential_and_trap_height.ipynb)                    |
+| 04       | Curvature + secular frequency proxy     | [Open](https://colab.research.google.com/github/thinkthoughts/ion-trap-parameter-lab/blob/main/notebooks/04_trap_curvature_and_secular_frequency_proxy_v2.ipynb)         |
+| 05       | Voltage sweeps                          | [Open](https://colab.research.google.com/github/thinkthoughts/ion-trap-parameter-lab/blob/main/notebooks/05_voltage_sweeps_and_trap_optimization_maps.ipynb)             |
+| 06       | Geometry sweeps                         | [Open](https://colab.research.google.com/github/thinkthoughts/ion-trap-parameter-lab/blob/main/notebooks/06_geometry_sweeps_width_and_gap_v3.ipynb)                      |
+| 07       | Combined optimization                   | [Open](https://colab.research.google.com/github/thinkthoughts/ion-trap-parameter-lab/blob/main/notebooks/07_combined_voltage_geometry_optimization.ipynb)                |
+| 08       | Physical scaling + best trap selection  | [Open](https://colab.research.google.com/github/thinkthoughts/ion-trap-parameter-lab/blob/main/notebooks/08_physical_scaling_and_best_trap_selection_v3.ipynb)           |
+| 09       | Full pipeline → physical design summary | [Open](https://colab.research.google.com/github/thinkthoughts/ion-trap-parameter-lab/blob/main/notebooks/09_integrated_optimization_to_physical_design_summary_v2.ipynb) |
+
+---
+
+## Example Output
+
+From the full pipeline:
+
+* Trap height ≈ **30 µm**
+* Secular frequency ≈ **1–2 MHz**
+* Stable RF pseudopotential minimum
+* Optimized electrode geometry + voltages
+
+These values are consistent with typical surface-electrode ion traps.
+
+---
+
+## Workflow Details
+
+### 1. Electrostatics
+
+* Solve Laplace equation with electrode boundary conditions
+* Surface-electrode geometry (RF + DC rails)
+
+### 2. Field Extraction
+
+* Compute electric field from potential gradient
+* Convert to RF pseudopotential
+
+### 3. Trap Detection
+
+* Identify local minima
+* Require **positive curvature (Hessian eigenvalues)**
+
+### 4. Optimization
+
+* Sweep:
+
+  * electrode geometry
+  * RF voltage
+  * DC voltage
+* Evaluate using curvature-based objective
+
+### 5. Physical Scaling
+
+* Convert to SI units
+* Extract:
+
+  * trap height (µm)
+  * pseudopotential (eV)
+  * secular frequencies (MHz)
+
+---
+
+## PDF Summary
+
+A concise 1–2 page summary of this workflow (recommended for sharing / applications):
+
+👉 **[Download PDF Summary](docs/ion_trap_parameter_lab_summary.pdf)**
+
+*(Add your PDF to `/docs/`)*
+
+---
+
+## Repository Structure
+
+```
+notebooks/
+  01_... → 09_...   (full pipeline progression)
+
+figures/
+  hero_figure_v2.png
+
+docs/
+  ion_trap_parameter_lab_summary.pdf
+
+README.md
+requirements.txt
+```
+
+---
+
+## Relevance to Trapped-Ion Design
+
+This workflow mirrors early-stage ion trap design:
+
+* electrostatic modeling of electrode layouts
+* parameter sweeps for optimization
+* curvature-based trap validation
+* extraction of physically meaningful performance metrics
+
+It provides a minimal but complete **design → physics → evaluation pipeline**.
+
+---
+
+## Notes
+
+* Model is simplified (2D, no axial confinement)
+* RF pseudopotential uses reduced boundary conditions
+* Results depend on chosen physical scaling
+
+---
+
+## Next Steps
+
+* refine optimization near best region
+* extend to 3D geometries
+* add multi-ion / species comparison
+* integrate compiled solvers or HPC scaling
+
+---
+
+## Author
+
+Dan Hawkley
+Independent Computational Science / Quantum Systems
+
+---
+
+## License
+
+MIT (or your preferred license)
