@@ -2,7 +2,7 @@
 
 **Electrostatic Design and Optimization Workflow for Surface-Electrode Ion Traps**
 
-![Hero Figure](figures/hero_figure_v2.png)
+![Hero Figure](figures/hero_figure.png)
 
 ---
 
